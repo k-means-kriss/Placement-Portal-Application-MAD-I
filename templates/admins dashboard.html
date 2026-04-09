@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADMIN'S DASHBOARD</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <h2>Admin's Dashboard</h2>
+
+        <ul class="nav nav-tabs" id="dashboardTabs" role="tablist">
+            <li class="nav-item">
+                <button class="nav-link {% if active_tab == 'apr' %}active{% endif %}" id="apr-tab" data-bs-toggle="tab" data-bs-target="#apr" type="button">Company</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link {% if active_tab == 'generator' %}active{% endif %}" id="generator-tab" data-bs-toggle="tab" data-bs-target="#generator" type="button">Ongoing Drives</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link {% if active_tab == 'past' %}active{% endif %}" id="past-tab" data-bs-toggle="tab" data-bs-target="#past" type="button">Past Drives</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link {% if active_tab == 'approve' %}active{% endif %}" id="approve-tab" data-bs-toggle="tab" data-bs-target="#approve" type="button">Approve Company</button>
+            </li>
+        </ul>
+
+        <div class="tab-content border border-top-0 p-4 bg-white" id="dashboardTabsContent">
+            
+            <div class="tab-pane fade {% if active_tab == 'apr' %}show active{% endif %}" id="apr" role="tabpanel">
+                <h3>Approve company to start placement drive</h3>
+                <p>Total companies: {{ data|length if data else 0 }}</p>
+                <div class="row mb-3">
+                    <div class="col-md-3"><div class="border p-2">Total Students: {{ totals.students }}</div></div>
+                    <div class="col-md-3"><div class="border p-2">Total Companies: {{ totals.companies }}</div></div>
+                    <div class="col-md-3"><div class="border p-2">Total Drives: {{ totals.drives }}</div></div>
+                    <div class="col-md-3"><div class="border p-2">Total Applications: {{ totals.applications }}</div></div>
+                </div>
+
+                {% if selected_student or selected_company %}
+                <div class="border p-3 mb-4 bg-white">
+                    {% if selected_student %}
+                    <h4>Student Details</h4>
+                    <table class="table table-bordered mb-0">
+                        <tr><th>Username</th><td>{{ selected_student[0] }}</td></tr>
+                        <tr><th>Name</th><td>{{ selected_student[1] }}</td></tr>
+                        <tr><th>Password</th><td>{{ selected_student[2] }}</td></tr>
+                        <tr><th>Email</th><td>{{ selected_student[3] }}</td></tr>
+                        <tr><th>Phone</th><td>{{ selected_student[4] }}</td></tr>
+                        <tr><th>College</th><td>{{ selected_student[5] }}</td></tr>
+                        <tr><th>Course</th><td>{{ selected_student[6] }}</td></tr>
+                        <tr><th>CGPA</th><td>{{ selected_student[7] }}</td></tr>
+                        <tr><th>Skills</th><td>{{ selected_student[8] }}</td></tr>
+                        <tr><th>Certifications</th><td>{{ selected_student[9] }}</td></tr>
+                        <tr><th>Placement Status</th><td>{{ selected_student[10] }}</td></tr>
+                        <tr><th>Account Status</th><td>{{ selected_student[11] }}</td></tr>
+                        <tr><th>Resume</th><td>{% if selected_student[12] %}<a href="{{ url_for('static', filename=selected_student[12]) }}" target="_blank" rel="noopener noreferrer">Open Resume</a>{% else %}-{% endif %}</td></tr>
+                    </table>
+                    {% endif %}
+
+                    {% if selected_company %}
+                    <h4 class="mt-4">Company Details</h4>
+                    <table class="table table-bordered mb-0">
+                        <tr><th>Email</th><td>{{ selected_company[0] }}</td></tr>
+                        <tr><th>Company Name</th><td>{{ selected_company[1] }}</td></tr>
+                        <tr><th>HR Name</th><td>{{ selected_company[2] }}</td></tr>
+                        <tr><th>HR Number</th><td>{{ selected_company[3] }}</td></tr>
+                        <tr><th>Website</th><td>{% if selected_company[4] %}<a href="{{ selected_company[4] }}" target="_blank" rel="noopener noreferrer">{{ selected_company[4] }}</a>{% else %}-{% endif %}</td></tr>
+                        <tr><th>Industry</th><td>{{ selected_company[5] }}</td></tr>
+                        <tr><th>Address</th><td>{{ selected_company[6] }}</td></tr>
+                        <tr><th>Description</th><td>{{ selected_company[7] }}</td></tr>
+                        <tr><th>Status</th><td>{{ selected_company[8] }}</td></tr>
+                    </table>
+                    {% endif %}
+                </div>
+                {% endif %}
+                {% if admin_msg %}
+                    <p style="color: green;">{{ admin_msg }}</p>
+                {% endif %}
+
+                <h4>Search Students</h4>
+                <form method="get" action="{{ url_for('ad') }}" class="mb-2">
+                    <input type="hidden" name="tab" value="apr">
+                    <input type="text" class="form-control mb-2" name="student_search" value="{{ filters.student_search }}" placeholder="Search by name, username, email, phone">
+                    <button class="btn btn-primary" type="submit">Search Students</button>
+                </form>
+
+                <table class="table table-bordered mb-4">
+                    <thead>
+                        <tr><th>Username</th><th>Name</th><th>Email</th><th>Phone</th><th>College</th><th>Course</th><th>CGPA</th><th>Status</th><th>Action</th></tr>
+                    </thead>
+                    <tbody>
+                        {% if students %}
+                            {% for s in students %}
+                            <tr>
+                                <td><a href="{{ url_for('ad', tab=active_tab, student_search=filters.student_search, company_search=filters.company_search, student_detail=s[0]) }}">{{ s[0] }}</a></td>
+                                <td>{{ s[1] }}</td>
+                                <td>{{ s[2] }}</td>
+                                <td>{{ s[3] }}</td>
+                                <td>{{ s[4] }}</td>
+                                <td>{{ s[5] }}</td>
+                                <td>{{ s[6] }}</td>
+                                <td>{{ s[7] }}</td>
+                                <td>
+                                    {% if s[7] == 'active' %}
+                                    <form method="post" action="{{ url_for('admin_student_action') }}" style="display:inline-block;">
+                                        <input type="hidden" name="username" value="{{ s[0] }}">
+                                        <input type="hidden" name="action" value="blacklist">
+                                        <button class="btn btn-sm btn-warning" type="submit">Revoke</button>
+                                    </form>
+                                    {% else %}
+                                    <form method="post" action="{{ url_for('admin_student_action') }}" style="display:inline-block;">
+                                        <input type="hidden" name="username" value="{{ s[0] }}">
+                                        <input type="hidden" name="action" value="reject">
+                                        <button class="btn btn-sm btn-warning" type="submit">Reject</button>
+                                    </form>
+                                    <form method="post" action="{{ url_for('admin_student_action') }}" style="display:inline-block;">
+                                        <input type="hidden" name="username" value="{{ s[0] }}">
+                                        <input type="hidden" name="action" value="activate">
+                                        <button class="btn btn-sm btn-success" type="submit">Activate</button>
+                                    </form>
+                                    {% endif %}
+                                    <form method="post" action="{{ url_for('admin_student_action') }}" style="display:inline-block;">
+                                        <input type="hidden" name="username" value="{{ s[0] }}">
+                                        <input type="hidden" name="action" value="delete">
+                                        <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr><td colspan="9">No students found.</td></tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+
+                <h4>Search Companies</h4>
+                <form method="get" action="{{ url_for('ad') }}" class="mb-2">
+                    <input type="hidden" name="tab" value="apr">
+                    <input type="text" class="form-control mb-2" name="company_search" value="{{ filters.company_search }}" placeholder="Search company by name">
+                    <button class="btn btn-primary" type="submit">Search Companies</button>
+                </form>
+
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Email</th>
+                            <th>Company Name</th>
+                            <th>HR Name</th>
+                            <th>HR Number</th>
+                            <th>Website</th>
+                            <th>Industry</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if companies_managed %}
+                            {% for company in companies_managed %}
+                            <tr>
+                                <td>{{ company[0] }}</td>
+                                <td><a href="{{ url_for('ad', tab=active_tab, student_search=filters.student_search, company_search=filters.company_search, company_detail=company[0]) }}">{{ company[1] }}</a></td>
+                                <td>{{ company[2] }}</td>
+                                <td>{{ company[3] }}</td>
+                                <td>
+                                    {% if company[4] %}
+                                        <a href="{{ company[4] }}" target="_blank" rel="noopener noreferrer">{{ company[4] }}</a>
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                                <td>{{ company[5] }}</td>
+                                <td>{{ company[6] }}</td>
+                                <td>
+                                    {% if company[6] == 'approved' %}
+                                    <form method="post" action="{{ url_for('admin_company_action') }}" style="display:inline-block;">
+                                        <input type="hidden" name="gmail" value="{{ company[0] }}">
+                                        <input type="hidden" name="action" value="blacklist">
+                                        <button class="btn btn-sm btn-warning" type="submit">Revoke</button>
+                                    </form>
+                                    {% elif company[6] == 'pending' %}
+                                    <form method="post" action="{{ url_for('admin_company_action') }}" style="display:inline-block;">
+                                        <input type="hidden" name="gmail" value="{{ company[0] }}">
+                                        <input type="hidden" name="action" value="reject">
+                                        <button class="btn btn-sm btn-warning" type="submit">Reject</button>
+                                    </form>
+                                    <form method="post" action="{{ url_for('admin_company_action') }}" style="display:inline-block;">
+                                        <input type="hidden" name="gmail" value="{{ company[0] }}">
+                                        <input type="hidden" name="action" value="activate">
+                                        <button class="btn btn-sm btn-success" type="submit">Approve</button>
+                                    </form>
+                                    {% else %}
+                                    <form method="post" action="{{ url_for('admin_company_action') }}" style="display:inline-block;">
+                                        <input type="hidden" name="gmail" value="{{ company[0] }}">
+                                        <input type="hidden" name="action" value="activate">
+                                        <button class="btn btn-sm btn-success" type="submit">Activate</button>
+                                    </form>
+                                    {% endif %}
+                                    <form method="post" action="{{ url_for('admin_company_action') }}" style="display:inline-block;">
+                                        <input type="hidden" name="gmail" value="{{ company[0] }}">
+                                        <input type="hidden" name="action" value="delete">
+                                        <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="8">No companies available yet.</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            
+            </div>
+
+            <div class="tab-pane fade {% if active_tab == 'generator' %}show active{% endif %}" id="generator" role="tabpanel">
+                <h3>Ongoing Drives</h3>
+                <form method="get" action="{{ url_for('ad') }}" class="mb-3">
+                    <input type="hidden" name="tab" value="generator">
+                    <input type="text" class="form-control mb-2" name="search" placeholder="Search by title, description, skills" value="{{ filters.search }}">
+                    <div class="row g-2">
+                        <div class="col-md-3">
+                            <select class="form-control" name="sort_by">
+                                <option value="newest" {% if filters.sort_by == 'newest' %}selected{% endif %}>Newest First</option>
+                                <option value="oldest" {% if filters.sort_by == 'oldest' %}selected{% endif %}>Oldest First</option>
+                                <option value="expiry" {% if filters.sort_by == 'expiry' %}selected{% endif %}>Expiry Time</option>
+
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-control" name="expiry_filter">
+                                <option value="all" {% if filters.expiry_filter == 'all' %}selected{% endif %}>All</option>
+                                <option value="active" {% if filters.expiry_filter == 'active' %}selected{% endif %}>Only Active</option>
+                                <option value="expired" {% if filters.expiry_filter == 'expired' %}selected{% endif %}>Only Expired</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="number" class="form-control" name="min_applications" min="0" value="{{ filters.min_applications }}" placeholder="Min Applications">
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-primary w-100" type="submit">Search / Filter</button>
+                        </div>
+                    </div>
+                </form>
+
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Drive ID</th>
+                            <th>Company</th>
+                            <th>Job Title</th>
+                            <th>Type</th>
+                            <th>Drive Status</th>
+                            <th>Created At</th>
+                            <th>Response Close</th>
+                            <th>Total Applications</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if ongoing_drives %}
+                            {% for drive in ongoing_drives %}
+                            <tr>
+                                <td>{{ drive[0] }}</td>
+                                <td><a href="{{ url_for('ad', tab='generator', search=filters.search, sort_by=filters.sort_by, expiry_filter=filters.expiry_filter, min_applications=filters.min_applications, company_detail=drive[1]) }}">{{ drive[2] }}</a></td>
+                                <td>{{ drive[3] }}</td>
+                                <td>{{ drive[4] }}</td>
+                                <td>{{ drive[14] }}</td>
+                                <td>{{ drive[7] }}</td>
+                                <td>{{ drive[9] }}</td>
+                                <td>{{ drive[15] }}</td>
+                                <td>
+                                    <form method="post" action="{{ url_for('admin_drive_status') }}" style="display:inline-block;">
+                                        <input type="hidden" name="drive_id" value="{{ drive[0] }}">
+                                        <input type="hidden" name="status" value="approved">
+                                    </form>
+                                    <form method="post" action="{{ url_for('admin_drive_status') }}" style="display:inline-block;">
+                                        <input type="hidden" name="drive_id" value="{{ drive[0] }}">
+                                        <input type="hidden" name="status" value="rejected">
+                                        <button class="btn btn-sm btn-danger" type="submit">Reject</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr><td colspan="9">No ongoing drives found.</td></tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="tab-pane fade {% if active_tab == 'past' %}show active{% endif %}" id="past" role="tabpanel">
+                <h3>History of Past Drives</h3>
+                <form method="get" action="{{ url_for('ad') }}" class="mb-3">
+                    <input type="hidden" name="tab" value="past">
+                    <input type="text" class="form-control mb-2" name="search" placeholder="Search by title, description, skills" value="{{ filters.search }}">
+                    <div class="row g-2">
+                        <div class="col-md-3">
+                            <select class="form-control" name="sort_by">
+                                <option value="newest" {% if filters.sort_by == 'newest' %}selected{% endif %}>Newest First</option>
+                                <option value="oldest" {% if filters.sort_by == 'oldest' %}selected{% endif %}>Oldest First</option>
+                                <option value="expiry" {% if filters.sort_by == 'expiry' %}selected{% endif %}>Expiry Time</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-control" name="expiry_filter">
+                                <option value="all" {% if filters.expiry_filter == 'all' %}selected{% endif %}>All</option>
+                                <option value="active" {% if filters.expiry_filter == 'active' %}selected{% endif %}>Only Active</option>
+                                <option value="expired" {% if filters.expiry_filter == 'expired' %}selected{% endif %}>Only Expired</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="number" class="form-control" name="min_applications" min="0" value="{{ filters.min_applications }}" placeholder="Min Applications">
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-primary w-100" type="submit">Search / Filter</button>
+                        </div>
+                    </div>
+                </form>
+
+                <table class="table table-bordered">
+                    <thead><tr><th>Drive ID</th><th>Company</th><th>Job Title</th><th>Created At</th><th>Response Close</th><th>Total Applications</th><th>Reason</th></tr></thead>
+                    <tbody>
+                        {% if past_drives %}
+                            {% for drive in past_drives %}
+                            <tr>
+                                <td>{{ drive[0] }}</td>
+                                <td><a href="{{ url_for('ad', tab='past', search=filters.search, sort_by=filters.sort_by, expiry_filter=filters.expiry_filter, min_applications=filters.min_applications, company_detail=drive[1]) }}">{{ drive[2] }}</a></td>
+                                <td>{{ drive[3] }}</td>
+                                <td>{{ drive[7] }}</td>
+                                <td>{{ drive[9] }}</td>
+                                <td>{{ drive[15] }}</td>
+                                <td>{% if drive[16] > 0 %}Student Selected{% else %}Deadline Reached{% endif %}</td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr><td colspan="7">No past drives found.</td></tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+
+                <h4>All Applications History</h4>
+                <table class="table table-bordered">
+                    <thead><tr><th>Application ID</th><th>Applied At</th><th>Status</th><th>Student</th><th>Name</th><th>Company</th><th>Job Title</th><th>Drive ID</th></tr></thead>
+                    <tbody>
+                        {% if app_history %}
+                            {% for a in app_history %}
+                            <tr>
+                                <td>{{ a[0] }}</td>
+                                <td>{{ a[1] }}</td>
+                                <td>{{ a[2] }}</td>
+                                <td><a href="{{ url_for('ad', tab=active_tab, student_search=filters.student_search, company_search=filters.company_search, student_detail=a[3]) }}">{{ a[3] }}</a></td>
+                                <td>{{ a[4] }}</td>
+                                <td><a href="{{ url_for('ad', tab=active_tab, student_search=filters.student_search, company_search=filters.company_search, company_detail=a[5]) }}">{{ a[6] }}</a></td>
+                                <td>{{ a[7] }}</td>
+                                <td>{{ a[8] }}</td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr><td colspan="8">No applications found.</td></tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="tab-pane fade {% if active_tab == 'approve' %}show active{% endif %}" id="approve" role="tabpanel">
+                <h3>Approve Company</h3>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Company Name</th>
+                            <th>Current Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if pending_companies %}
+                            {% for company in pending_companies %}
+                            <tr>
+                                <td><a href="{{ url_for('ad', tab='apr', student_search=filters.student_search, company_search=filters.company_search, company_detail=company[0]) }}">{{ company[1] }}</a></td>
+                                <td>{{ company[7] }}</td>
+                                <td>
+                                    <form method="post" action="{{ url_for('admin_company_status') }}" style="display:inline-block; margin-right: 6px;">
+                                        <input type="hidden" name="gmail" value="{{ company[0] }}">
+                                        <input type="hidden" name="status" value="approved">
+                                        <button class="btn btn-sm btn-success" type="submit">Approve</button>
+                                    </form>
+                                    <form method="post" action="{{ url_for('admin_company_action') }}" style="display:inline-block;">
+                                        <input type="hidden" name="gmail" value="{{ company[0] }}">
+                                        <input type="hidden" name="action" value="reject">
+                                        <button class="btn btn-sm btn-danger" type="submit">Reject</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="3">No pending companies available yet.</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <div class="mt-4">
+        <a href="{{ url_for('home') }}">Back to home</a>
+    </div>
+
+
+</body>
+</html>

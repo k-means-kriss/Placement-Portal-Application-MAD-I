@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    {% include 'nav.html' %}
+    <div class="login">
+        <h1 style="text-decoration:solid;">LOGIN PAGE</h1>
+    </div>
+    <div class="admin">
+
+    <div style="text-align:center;"><h2>ADMIN</h2></div>
+    <div class="form-container">
+    <form action="/admin_login" method="post">
+            <div class="input-group">
+            <label for="username">EMAIL</label>
+            <input type="text" id="username" name="admin-user" placeholder="Enter Email" required>
+        </div>
+
+        <div class="input-group">
+            <label for="password">PASSWORD</label>
+            <input type="password" id="password" name="admin-pass" placeholder="Enter Password" required>
+        </div>
+
+        <button type="submit" class="login-btn">LOGIN</button>
+    </form>
+    <div>
+            <h1 style='color: red'>{{admin_show}}</h1>
+    </div>
+
+    
+    
+</div>
+    </div>
+
+    <div class="company">
+
+    <div style="text-align:center;"><h2>COMPANY</h2></div>
+    <div class="form-container">
+    <form action="/company-login" method="POST">
+
+    <div class="input-group">
+        <label for="gmail">gmail</label>
+        <input type="gmail" id="gmail" name="gmail" placeholder="Enter gmail" required>
+    </div>
+
+    <div class="input-group">
+        <label for="password">PASSWORD</label>
+        <input type="password" id="password" name="password" placeholder="Enter Password" required>
+    </div>
+
+    <button type="submit" class="login-btn">LOGIN</button>
+
+</form>
+<a href ="{{url_for('cr')}}" style='text-align:center'>
+        <h2>REGISTER</H2>
+        </a>
+    
+</div>
+<div>
+    <h3 style="color: #0d6efd; margin-top: 10px;">{{company_show}}</h3>
+    <h1 style='color: red'>{{company_error}}</h1>
+    </div>
+    </div>
+
+    <div class="student">
+
+    <div style="text-align:center;"><h2>STUDENT</h2></div>
+    <div class="form-container">
+    <form action="/student-login" method="post">
+        <div class="input-group">
+            <label for="student-gmail">STUDENT GMAIL</label>
+            <input type="email" id="student-gmail" name="student_gmail" placeholder="Enter Student Gmail" required>
+        </div>
+
+        <div class="input-group">
+            <label for="password">PASSWORD</label>
+            <input type="password" id="password" name="password" placeholder="Enter Password" required>
+        </div>
+
+        <button type="submit" class="login-btn">LOGIN</button>
+    </form>
+    <a href ="{{url_for('sr')}}" style='text-align:center'>
+        <h2>REGISTER</H2>
+        </a>
+    <div>
+        <h1 style='color: red'>{{student_show}}</h1>
+    </div>
+    
+</div>
+    </div>
+
+<a href="{{ url_for('home') }}"><h3 style="text-align: left; margin-top: 10px; font-style: italic;"> GO-BACK </h3>
+</a>
+
+</body>
+</html>

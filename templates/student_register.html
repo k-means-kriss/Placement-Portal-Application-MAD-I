@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Register</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="st-page">
+
+    <h1 class="st-header">REGISTER AS STUDENT</h1>
+
+    <div class="st-container">
+        <form class="st-form" method="post" action="{{ url_for('student_register_post') }}">
+
+            <input class="st-input" type="text" name="name" placeholder="Full Name" required>
+            <input class="st-input" type="text" name="username" placeholder="Username" required>
+            <input class="st-input" type="email" name="email" placeholder="Student Gmail" required>
+            <input class="st-input" type="text" name="phone" placeholder="Phone Number" required>
+            <input class="st-input" type="text" name="college" placeholder="College Name" required>
+            <input class="st-input" type="text" name="course" placeholder="Course / Branch" required>
+            <input class="st-input" type="password" name="password" placeholder="Password" required>
+
+            <button class="st-btn" type="submit">REGISTER</button>
+
+            {% if show %}
+            <p style="color: red; margin-top: 10px;">{{ show }}</p>
+            {% endif %}
+
+        </form>
+    </div>
+
+    <div class="st-links">
+        <p>Already have an account?</p>
+        <a href="{{ url_for('login') }}">TRY TO LOGIN</a>
+    </div>
+
+</div>
+
+</body>
+</html>

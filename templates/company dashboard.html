@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+    <div class="container mt-5">
+        <h2 class="mb-4">Company Dashboard</h2>
+
+        {% if selected_student %}
+        <div class="border p-3 mb-4 bg-white">
+            <h4>Student Details</h4>
+            <table class="table table-bordered mb-0">
+                <tr><th>Username</th><td>{{ selected_student[0] }}</td></tr>
+                <tr><th>Name</th><td>{{ selected_student[1] }}</td></tr>
+                <tr><th>Password</th><td>{{ selected_student[2] }}</td></tr>
+                <tr><th>Email</th><td>{{ selected_student[3] }}</td></tr>
+                <tr><th>Phone</th><td>{{ selected_student[4] }}</td></tr>
+                <tr><th>College</th><td>{{ selected_student[5] }}</td></tr>
+                <tr><th>Course</th><td>{{ selected_student[6] }}</td></tr>
+                <tr><th>CGPA</th><td>{{ selected_student[7] }}</td></tr>
+                <tr><th>Skills</th><td>{{ selected_student[8] }}</td></tr>
+                <tr><th>Certifications</th><td>{{ selected_student[9] }}</td></tr>
+                <tr><th>Placement Status</th><td>{{ selected_student[10] }}</td></tr>
+                <tr><th>Account Status</th><td>{{ selected_student[11] }}</td></tr>
+                <tr><th>Resume</th><td>{% if selected_student[12] %}<a href="{{ url_for('static', filename=selected_student[12]) }}" target="_blank" rel="noopener noreferrer">Open Resume</a>{% else %}-{% endif %}</td></tr>
+            </table>
+        </div>
+        {% endif %}
+
+        <ul class="nav nav-tabs" id="dashboardTabs" role="tablist">
+            <li class="nav-item">
+                <button class="nav-link {% if active_tab == 'info' %}active{% endif %}" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button">Info Page</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link {% if active_tab == 'generator' %}active{% endif %}" id="generator-tab" data-bs-toggle="tab" data-bs-target="#generator" type="button">Drive Generator</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link {% if active_tab == 'past' %}active{% endif %}" id="past-tab" data-bs-toggle="tab" data-bs-target="#past" type="button">Past Drives</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link {% if active_tab == 'edit' %}active{% endif %}" id="edit-tab" data-bs-toggle="tab" data-bs-target="#edit" type="button">edit info</button>
+            </li>
+        </ul>
+    </div>
+
+    <div class="tab-content mt-3" id="dashboardTabsContent">
+        {% set c = company %}
+
+        <div class="tab-pane fade {% if active_tab == 'info' %}show active{% endif %}" id="info" role="tabpanel" aria-labelledby="info-tab">
+            <div style="display: flex; justify-content: center; align-items: center; height: 40vh; border:3px solid cyan ; margin: 6%">
+                {% if c %}
+                <table class="table table-bordered bg-white w-75">
+                    <tr>
+                        <th style="width: 30%;">Gmail</th>
+                        <td>{{ c[0] }}</td>
+                    </tr>
+                    <tr>
+                        <th>CompanyName</th>
+                        <td>{{ c[1] }}</td>
+                    </tr>
+                    <tr>
+                        <th>HR Name</th>
+                        <td>{{ c[2] }}</td>
+                    </tr>
+                    <tr>
+                        <th>Number</th>
+                        <td>{{ c[3] }}</td>
+                    </tr>
+                    <tr>
+                        <th>Website</th>
+                        <td>{{ c[4] }}</td>
+                    </tr>
+                    <tr>
+                        <th>Industry</th>
+                        <td>{{ c[5] }}</td>
+                    </tr>
+                    <tr>
+                        <th>Description</th>
+                        <td>{{ c[7] }}</td>
+                    </tr>
+                    <tr>
+                        <th>status</th>
+                        <td style="color: red;">{{c[8]}}</td>
+                    </tr>
+                </table>
+                {% else %}
+                <p>No company data found.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="tab-pane fade {% if active_tab == 'generator' %}show active{% endif %}" id="generator" role="tabpanel" aria-labelledby="generator-tab">
+            <h3>Create New Placement Drive</h3>
+            <form action="{{ url_for('create_drive') }}" method="post" class="mb-4">
+                <div class="mb-2">Job Title<input type="text" class="form-control" name="job_title" placeholder="Job Title"></div>
+                <div class="mb-2">
+                    <select class="form-control" name="type">
+                        <option value="">Select Type</option>
+                        <option value="full time">Full Time</option>
+                        <option value="intern">Intern</option>
+                        <option value="internship">Internship</option>
+                        <option value="part time">Part Time</option>
+                        <option value="contract">Contract</option>
+                    </select>
+                </div>
+                <div class="mb-2"><input type="text" class="form-control" name="salary" placeholder="Salary"></div>
+                <div class="mb-2"><input type="text" class="form-control" name="location" placeholder="Location"></div>
+                <div class="mb-2"><input type="date" class="form-control" name="application_deadline" placeholder="Application Deadline"></div>
+                <div class="mb-2"><input type="datetime-local" class="form-control" name="response_close_at" placeholder="Response Close At"></div>
+                <div class="mb-2"><input type="date" class="form-control" name="interview_deadline" placeholder="Interview Deadline"></div>
+                <div class="mb-2"><input type="text" class="form-control" name="job_description" placeholder="Job Description"></div>
+                <div class="mb-2"><input type="text" class="form-control" name="eligibility" placeholder="Eligibility"></div>
+                <div class="mb-2"><input type="text" class="form-control" name="skills" placeholder="Skills"></div>
+                <button class="btn btn-primary" type="submit">Generate Drive</button>
+            </form>
+        </div>
+
+        <div class="tab-pane fade {% if active_tab == 'past' %}show active{% endif %}" id="past" role="tabpanel" aria-labelledby="past-tab">
+            <h3>Past Drives</h3>
+            <p>Click a drive to view participants and update application status.</p>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Drive ID</th>
+                        <th>Job Title</th>
+                        <th>Type</th>
+                        <th>Salary</th>
+                        <th>Location</th>
+                        <th>Application Deadline</th>
+                        <th>Response Close At</th>
+                        <th>Interview Deadline</th>
+                        <th>Description</th>
+                        <th>Eligibility</th>
+                        <th>Skills</th>
+                        <th>Status</th>
+                        <th>Total Applications</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if drives %}
+                        {% for drive in drives %}
+                        <tr>
+                            <td><a href="{{ url_for('company_dashboard', tab='past', drive_id=drive[0]) }}">{{ drive[0] }}</a></td>
+                            <td><a href="{{ url_for('company_dashboard', tab='past', drive_id=drive[0]) }}">{{ drive[1] }}</a></td>
+                            <td>{{ drive[2] }}</td>
+                            <td>{{ drive[3] }}</td>
+                            <td>{{ drive[4] }}</td>
+                            <td>{{ drive[5] }}</td>
+                            <td>{{ drive[6] }}</td>
+                            <td>{{ drive[7] }}</td>
+                            <td>{{ drive[8] }}</td>
+                            <td>{{ drive[9] }}</td>
+                            <td>{{ drive[10] }}</td>
+                            <td>{{ drive[11] }}</td>
+                            <td>{{ drive[12] }}</td>
+                            <td>
+                                <form action="{{ url_for('company_drive_action') }}" method="post" style="display:inline-block; margin-bottom:4px;">
+                                    <input type="hidden" name="drive_id" value="{{ drive[0] }}">
+                                    <input type="hidden" name="action" value="close">
+                                    <button class="btn btn-sm btn-warning" type="submit">Close</button>
+                                </form>
+                                <form action="{{ url_for('company_drive_action') }}" method="post" style="display:inline-block; margin-bottom:4px;">
+                                    <input type="hidden" name="drive_id" value="{{ drive[0] }}">
+                                    <input type="hidden" name="action" value="delete">
+                                    <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+                                </form>
+                                <form action="{{ url_for('company_edit_drive') }}" method="post" style="margin-top:4px;">
+                                    <input type="hidden" name="drive_id" value="{{ drive[0] }}">
+                                    <input type="text" name="job_title" placeholder="New title" style="width:120px;">
+                                    <input type="text" name="salary" placeholder="New salary" style="width:100px;">
+                                    <input type="text" name="location" placeholder="New location" style="width:110px;">
+                                    <input type="datetime-local" name="response_close_at" style="width:180px;">
+                                    <button class="btn btn-sm btn-primary" type="submit">Edit</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr><td colspan="14">No drives posted yet.</td></tr>
+                    {% endif %}
+                </tbody>
+            </table>
+
+            {% if selected_drive_id %}
+            <h4>Participants For Drive {{ selected_drive_id }}</h4>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Application ID</th>
+                        <th>Applied At</th>
+                        <th>Username</th>
+                        <th>Name</th>
+                        <th>Student Gmail</th>
+                        <th>College</th>
+                        <th>Course</th>
+                        <th>CGPA</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if participants %}
+                        {% for p in participants %}
+                        <tr>
+                            <td>{{ p[0] }}</td>
+                            <td>{{ p[1] }}</td>
+                                <td><a href="{{ url_for('company_dashboard', tab='past', drive_id=selected_drive_id, student_detail=p[2]) }}">{{ p[2] }}</a></td>
+                            <td>{{ p[3] }}</td>
+                            <td>{{ p[4] }}</td>
+                            <td>{{ p[5] }}</td>
+                            <td>{{ p[6] }}</td>
+                            <td>{{ p[7] }}</td>
+                            <td>{{ p[8] }}</td>
+                            <td>
+                                <form action="{{ url_for('company_application_status') }}" method="post" style="display:inline-block; margin-bottom: 4px;">
+                                    <input type="hidden" name="application_id" value="{{ p[0] }}">
+                                    <input type="hidden" name="drive_id" value="{{ selected_drive_id }}">
+                                    <input type="hidden" name="application_status" value="shortlisted">
+                                    <button class="btn btn-sm btn-warning" type="submit">Shortlisted</button>
+                                </form>
+                                <form action="{{ url_for('company_application_status') }}" method="post" style="display:inline-block; margin-bottom: 4px;">
+                                    <input type="hidden" name="application_id" value="{{ p[0] }}">
+                                    <input type="hidden" name="drive_id" value="{{ selected_drive_id }}">
+                                    <input type="hidden" name="application_status" value="selected">
+                                    <button class="btn btn-sm btn-success" type="submit">Selected</button>
+                                </form>
+                                <form action="{{ url_for('company_application_status') }}" method="post" style="display:inline-block; margin-bottom: 4px;">
+                                    <input type="hidden" name="application_id" value="{{ p[0] }}">
+                                    <input type="hidden" name="drive_id" value="{{ selected_drive_id }}">
+                                    <input type="hidden" name="application_status" value="not shortlisted">
+                                    <button class="btn btn-sm btn-secondary" type="submit">Not Shortlisted</button>
+                                </form>
+                                <form action="{{ url_for('company_application_status') }}" method="post" style="display:inline-block; margin-bottom: 4px;">
+                                    <input type="hidden" name="application_id" value="{{ p[0] }}">
+                                    <input type="hidden" name="drive_id" value="{{ selected_drive_id }}">
+                                    <input type="hidden" name="application_status" value="not selected">
+                                    <button class="btn btn-sm btn-dark" type="submit">Not Selected</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr><td colspan="10">No participants have applied for this drive yet.</td></tr>
+                    {% endif %}
+                </tbody>
+            </table>
+            {% endif %}
+        </div>
+
+        <div class="tab-pane fade {% if active_tab == 'edit' %}show active{% endif %}" id="edit" role="tabpanel" aria-labelledby="edit-tab">
+    <form method="post" action="/edit-ci" style="display:flex; flex-direction:column; width:300px; size: 10px;">
+
+        <input class="rc-input" type="text" name="company_name" value="{{ c[1] if c else '' }}" placeholder="Company Name" style="margin: 2%; padding: 10px;">
+        
+        <input class="rc-input" type="text" name="hr_name" value="{{ c[2] if c else '' }}" placeholder="HR Name" style="margin: 2%; padding: 10px;">
+        
+        <input class="rc-input" type="text" name="hrnum" value="{{ c[3] if c else '' }}" placeholder="HR Number" style="margin: 2%; padding: 10px;">
+        
+        <input class="rc-input" type="text" name="gmail" value="{{ c[0] if c else '' }}" readonly style="margin: 2%; padding: 10px;">
+        
+        <input class="rc-input" type="password" name="password" placeholder="Password" style="margin: 2%; padding: 10px;">
+        
+        <input class="rc-input" type="text" name="website" value="{{ c[4] if c else '' }}" placeholder="website" style="margin: 2%; padding: 10px;">
+        
+        <input class="rc-input" type="text" name="address" value="{{ c[6] if c else '' }}" placeholder="address" style="margin: 2%; padding: 10px;">
+        
+        <input class="rc-input" type="text" name="industry" value="{{ c[5] if c else '' }}" placeholder="industry" style="margin: 2%; padding: 10px;">
+        
+        <input class="rc-input" type="text" name="description" value="{{ c[7] if c else '' }}" placeholder="description" style="margin: 2%; padding: 30px;">
+        
+        <button class="rc-btn" type="submit" style="width: 105%; padding: 15px; font-size: 1.1rem; font-weight: bold; margin-top: 15px; cursor: pointer; background-color: #4285f4; color: white; border: none; border-radius: 4px;">
+            SAVE CHANGES
+        </button>
+
+    </form>
+</div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<div class="mt-4">
+        <a class="back-home-link" href="{{ url_for('home') }}">Back to home</a>
+    </div>
+</body>
+</html>

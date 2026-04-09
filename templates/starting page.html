@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Placement Portal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+
+<body>
+    {% include 'nav.html' %}
+
+<div class="main-container">
+
+   
+    <div class="left-section">
+
+        <h1 style="font-style: italic; font-size: 50px;">WELCOME TO THE <br> PLACEMENT PORTAL</h1>
+
+        <div class="login-container">
+
+            <div class="login-box">
+                <a href="{{ url_for('login') }}"><h2>LOGIN AS <br> STUDENT</h2></a>
+                
+            </div>
+
+            <div class="login-box">
+                <a href="{{ url_for('login') }}"><h2>LOGIN AS <br> COMPANY</h2></a>
+            </div>
+
+        </div>
+
+    </div>
+
+
+   
+    <div class="right-section">
+
+        <h3 style="background-color:black; color: aliceblue; border-radius:20px">GUARANTEED PLACEMENT</h3>
+
+        <h3 style="background-color:black; color: aliceblue;border-radius:20px">PLACEMENT RECORD FOR MOST STUDENTS PLACED</h3>
+
+        <h3 style="background-color:black; color: aliceblue;border-radius:20px">PLACEMENT UPTO 90 LPA</h3>
+
+        <div class="admin-box">
+            ADMIN MAIL - admin123@gmail.com <br>
+            ADMIN PASSWORD - admin123#
+        </div>
+
+    </div>
+
+</div>
+
+
+</body>
+</html>

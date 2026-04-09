@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Company</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <div>
+        <h1 style="height: 40px;color:white; background-color: black; text-align: center; border-radius: 25px; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
+            REGISTER COMPANY</h1>
+    </div>
+
+    <div style="display: flex; justify-content: center; align-items: top; height: 50vh; width: 100vw; margin-top: 5%;">
+
+    {% if show %}
+    <p style="text-align:center; color:#b00020; font-weight:600;">{{ show }}</p>
+    {% endif %}
+
+    <form method="post" action="/cr" style="display:flex; flex-direction:column; width:300px; size: 10px;">            
+
+    <input class="rc-input" type="text" name="company_name" placeholder="Company Name" required style="margin: 2%; padding: 10px;" >
+    <input class="rc-input" type="text" name="hr_name" placeholder="HR Name" required style="margin: 2%; padding: 10px;">
+    <input class="rc-input" type="text" name="hrnum" placeholder="HR Number" required style="margin: 2%; padding: 10px;">
+    <input class="rc-input" type="text" name="gmail" placeholder="Company Mail" required style="margin: 2%; padding: 10px;">
+    <input class="rc-input" type="password" name="password" placeholder="Password" required style="margin: 2%; padding: 10px;">
+    <input class="rc-input" type="text" name="website" placeholder="website" required style="margin: 2%; padding: 10px;">
+    <input class="rc-input" type="text" name="address" placeholder="address" required style="margin: 2%; padding: 10px;">
+    <input class="rc-input" type="text" name="industry" placeholder="industry" required style="margin: 2%; padding: 10px;">
+    <input class="rc-input" type="text" name="description" placeholder="description" required style="margin: 2%; padding: 30px;">
+<button class="rc-btn" type="submit" style="width: 105%; padding: 15px; font-size: 1.1rem; font-weight: bold; margin-top: 15px; cursor: pointer; background-color: #4285f4; color: white; border: none; border-radius: 4px;">
+            REGISTER
+        </button>
+
+</form>
+    </div>
+<div style="margin-top: 10%">
+
+    <a href={{url_for('login')}} style="color: blueviolet; text-align: center;">
+        <h2>HAVE AN ACCOUNT?</h2>
+        <h2> TRY TO LOGIN</h2>
+    </a>
+</div>
+</body>
+</html>
