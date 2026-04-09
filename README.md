@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Placement Portal Application — MAD-I
 
 > Modern Application Development I | IIT Madras BS Programme
@@ -96,3 +97,55 @@ Track issues and blockers in the [GitHub Issues](../../issues) tab.
 ---
 
 *Project submitted as part of the IIT Madras BS in Data Science & Applications programme.*
+=======
+# Placement Website Project
+
+This is a simple placement website made using Flask and SQLite.
+It has 3 main users:
+- Admin
+- Company
+- Student
+
+## Main Features
+- Company registration and login
+- Student registration and login
+- Admin approval and management
+- Placement drive creation and applications
+- Resume upload for student profile
+
+## Tech Used
+- Python
+- Flask
+- SQLite
+- HTML/CSS
+
+## How to Run
+1. Open terminal in project folder.
+2. Create virtual env (optional but recommended):
+   - `python3 -m venv .venv`
+3. Activate env:
+   - macOS/Linux: `source .venv/bin/activate`
+4. Install dependencies:
+   - `pip install -r requirements.txt`
+5. Run app:
+   - `python app.py`
+6. Open browser:
+   - `http://127.0.0.1:8000`
+
+## Default Admin Login
+- Email: admin123@gmail.com
+- Password: admin123#
+
+## Important Notes
+- This project stores data in `database.db`.
+- Uploaded resumes are saved in `static/uploads/resumes`.
+- For production, set environment variable `SECRET_KEY`.
+
+## Project Folder Structure (basic)
+- `app.py` -> Flask routes and app logic
+- `model.py` -> SQLite database functions
+- `templates/` -> HTML pages
+- `static/` -> CSS and uploaded files
+- `requirements.txt` -> Python dependencies
+- `.gitignore` -> files/folders ignored in git
+>>>>>>> 4985b2f (Milestone-PPA DB-Relationship)
