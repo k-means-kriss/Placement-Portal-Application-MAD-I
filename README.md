@@ -1,151 +1,171 @@
-<<<<<<< HEAD
-# Placement Portal Application — MAD-I
+# 🎓 Placement Portal Application — MAD-I
 
-> Modern Application Development I | IIT Madras BS Programme
+> **Modern Application Development I | IIT Madras BS in Data Science & Applications**
 
-A web-based Placement Portal built with Flask and SQLite that connects students, companies, and administrators for managing job postings, applications, and placement drives.
-
----
-
-## Tech Stack
-
-- **Backend:** Python, Flask
-- **Database:** SQLite
-- **Frontend:** HTML, CSS, Bootstrap, Jinja2
-- **Version Control:** Git & GitHub
+A full-stack web application built with **Flask** and **SQLite** that connects students, companies, and administrators for managing placement drives, job postings, and applications — all in one place.
 
 ---
 
-## Project Structure
+## 🚀 Live Demo / Repo
+
+🔗 [GitHub Repository](https://github.com/k-means-kriss/Placement-Portal-Application-MAD-I)
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|-------|------------|
+| **Backend** | Python, Flask |
+| **Database** | SQLite |
+| **Frontend** | HTML, CSS, Bootstrap, Jinja2 |
+| **Auth** | Flask-Login, Session Management |
+| **Version Control** | Git & GitHub |
+
+---
+
+## 📁 Project Structure
 
 ```
-placement-portal-mad1/
-├── app.py
-├── models.py
+Placement-Portal-Application-MAD-I/
+├── app.py                  # Flask routes and application logic
+├── model.py                # SQLite database functions & schema
+├── requirements.txt        # Python dependencies
 ├── README.md
 ├── .gitignore
 ├── static/
-│   └── css/
+│   ├── css/                # Stylesheets
+│   └── uploads/
+│       └── resumes/        # Uploaded student resumes
 ├── templates/
-│   ├── admin/
-│   ├── company/
-│   └── student/
+│   ├── admin/              # Admin dashboard templates
+│   ├── company/            # Company dashboard templates
+│   └── student/            # Student dashboard templates
 └── instance/
-    └── placement.db
+    └── database.db         # SQLite database file
 ```
 
 ---
 
-## Roles
+## 👥 Roles & Access
 
 | Role | Description |
 |------|-------------|
-| **Admin** | Predefined. Approves companies, manages all data |
-| **Company** | Registers, posts jobs after admin approval |
-| **Student** | Registers, applies to approved job postings |
+| 🔑 **Admin** | Predefined user. Approves companies, manages all platform data |
+| 🏢 **Company** | Self-registers, posts jobs after admin approval |
+| 🎓 **Student** | Self-registers, builds profile, applies to job postings |
 
 ---
 
-## Milestone Progress
+## ✨ Features
 
-| Milestone | Commit Message | Status |
-|-----------|----------------|--------|
-| GitHub Repository Setup | `Milestone-0 PPA-MAD-1` | ✅ Done |
-| Database Models & Schema | `Milestone-PPA DB-Relationship` | ⬜ Pending |
-| Authentication & RBAC | `Milestone-PPA Auth_RBAC` | ⬜ Pending |
-| Admin Dashboard | `Milestone-PPA Admin-Dashboard-Management` | ⬜ Pending |
-| Company Dashboard | `Milestone-PPA Company-Dashboard-Management` | ⬜ Pending |
-| Student Dashboard | `Milestone-PPA Student-Dashboard-Management` | ⬜ Pending |
-| Placement Status Tracking | `Milestone-PPA Placement-Tracking` | ⬜ Pending |
+### Admin
+- Approve or reject company registrations
+- View and manage all students, companies, and applications
+- Monitor placement statistics
 
----
+### Company
+- Register and log in
+- Post placement drives / job listings (after admin approval)
+- View applications received from students
 
-## Optional Enhancements
-
-| Milestone | Commit Message |
-|-----------|----------------|
-| API Integration | `Milestone-PPA Created-API` |
-| Charts & Visualization | `Milestone-PPA Charts` |
-| Frontend & Backend Validation | `Milestone-PPA Validation` |
-| Responsive UI & Styling | `Milestone-PPA Responsive-UI` |
-| Flask-Login & Security | `Milestone-PPA Flask-Integration` |
+### Student
+- Register and log in
+- Build a profile with resume upload
+- Browse approved job listings
+- Apply to placement drives
+- Track application status
 
 ---
 
-## How to Run Locally
+## ⚙️ How to Run Locally
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/YOUR_USERNAME/placement-portal-mad1.git
-cd placement-portal-mad1
+git clone https://github.com/k-means-kriss/Placement-Portal-Application-MAD-I.git
+cd Placement-Portal-Application-MAD-I
 
-# 2. Install dependencies
-pip install flask
+# 2. Create and activate a virtual environment (recommended)
+python3 -m venv .venv
 
-# 3. Run the app
+# macOS / Linux
+source .venv/bin/activate
+
+# Windows
+.venv\Scripts\activate
+
+# 3. Install dependencies
+pip install -r requirements.txt
+
+# 4. Run the application
 python app.py
 ```
 
-Visit `http://localhost:5000` in your browser.
+Visit **`http://127.0.0.1:8000`** in your browser.
 
 ---
 
-## Issues & Notes
+## 🔐 Default Admin Credentials
 
-Track issues and blockers in the [GitHub Issues](../../issues) tab.
+| Field | Value |
+|-------|-------|
+| Email | `admin123@gmail.com` |
+| Password | `admin123#` |
+
+> ⚠️ Change these credentials before deploying to production.
 
 ---
 
-*Project submitted as part of the IIT Madras BS in Data Science & Applications programme.*
-=======
-# Placement Website Project
+## 📦 Important Notes
 
-This is a simple placement website made using Flask and SQLite.
-It has 3 main users:
-- Admin
-- Company
-- Student
+- Data is stored in `instance/database.db` (SQLite)
+- Uploaded resumes are saved under `static/uploads/resumes/`
+- For production deployment, set a secure `SECRET_KEY` environment variable:
+  ```bash
+  export SECRET_KEY="your-secure-random-key"
+  ```
 
-## Main Features
-- Company registration and login
-- Student registration and login
-- Admin approval and management
-- Placement drive creation and applications
-- Resume upload for student profile
+---
 
-## Tech Used
-- Python
-- Flask
-- SQLite
-- HTML/CSS
+## 🏁 Milestone Progress
 
-## How to Run
-1. Open terminal in project folder.
-2. Create virtual env (optional but recommended):
-   - `python3 -m venv .venv`
-3. Activate env:
-   - macOS/Linux: `source .venv/bin/activate`
-4. Install dependencies:
-   - `pip install -r requirements.txt`
-5. Run app:
-   - `python app.py`
-6. Open browser:
-   - `http://127.0.0.1:8000`
+| Milestone | Description | Status |
+|-----------|-------------|--------|
+| Milestone 0 | GitHub Repository Setup | ✅ Done |
+| Milestone 1 | Database Models & Schema | ✅ Done |
+| Milestone 2 | Authentication & RBAC | ✅ Done |
+| Milestone 3 | Admin Dashboard & Management | ✅ Done |
+| Milestone 4 | Company Dashboard & Management | ✅ Done |
+| Milestone 5 | Student Dashboard & Management | ✅ Done |
+| Milestone 6 | Placement Status Tracking | ✅ Done |
 
-## Default Admin Login
-- Email: admin123@gmail.com
-- Password: admin123#
+### 🌟 Optional Enhancements
 
-## Important Notes
-- This project stores data in `database.db`.
-- Uploaded resumes are saved in `static/uploads/resumes`.
-- For production, set environment variable `SECRET_KEY`.
+| Enhancement | Status |
+|-------------|--------|
+| REST API Integration | ✅ Done |
+| Charts & Data Visualization | ✅ Done |
+| Frontend & Backend Validation | ✅ Done |
+| Responsive UI & Styling | ✅ Done |
+| Flask-Login & Security Hardening | ✅ Done |
 
-## Project Folder Structure (basic)
-- `app.py` -> Flask routes and app logic
-- `model.py` -> SQLite database functions
-- `templates/` -> HTML pages
-- `static/` -> CSS and uploaded files
-- `requirements.txt` -> Python dependencies
-- `.gitignore` -> files/folders ignored in git
->>>>>>> 4985b2f (Milestone-PPA DB-Relationship)
+---
+
+## 📊 Project Result
+
+| Metric | Value |
+|--------|-------|
+| **Course** | Modern Application Development I (MAD-I) |
+| **Programme** | IIT Madras BS in Data Science & Applications |
+| **Score** | 90 / 100 |
+| **Grade** | S |
+
+---
+
+## 📄 License
+
+This project was built for academic purposes as part of the IIT Madras BS programme.
+
+---
+
+*Made with ❤️ as part of the IIT Madras BS in Data Science & Applications programme.*
